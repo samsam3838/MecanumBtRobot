@@ -81,27 +81,75 @@ void loop()
   RemoteXY_Handler ();
   
   if(RemoteXY.connect_flag == false){
-    pwmController.setChannelPWM(0,  128 << 4);  // set to zero all motor
-    pwmController.setChannelPWM(1,  128 << 4);  // set to zero all motor
-    pwmController.setChannelPWM(2,  128 << 4);  // set to zero all motor
-    pwmController.setChannelPWM(3,  128 << 4);  // set to zero all motor
+    pwmController.setChannelPWM(0,  0);  // set to zero all motor
+    pwmController.setChannelOff(1);
+    pwmController.setChannelPWM(2,  0);  // set to zero all motor
+    pwmController.setChannelOff(3);
+    pwmController.setChannelPWM(4,  0);  // set to zero all motor
+    pwmController.setChannelOff(5);
+    pwmController.setChannelPWM(6,  0);  // set to zero all motor
+    pwmController.setChannelOff(7);
   }
 
   /* When is connected */
   else {
     
     /* Update motor value with joystick value */
-    uint8_t joystick_1_x = map(RemoteXY.joystick_1_x,-100,100,128,255);
-    pwmController.setChannelPWM(0,  joystick_1_x << 4);
+    if(RemoteXY.joystick_1_x > 0) {
+      pwmController.setChannelPWM(1, map(RemoteXY.joystick_1_x, 0, 100, 0, 4096));  // set to zero all motor
+      pwmController.setChannelOff(0);
+    }
+    else if(RemoteXY.joystick_1_x < 0) {
+      pwmController.setChannelPWM(0, map(RemoteXY.joystick_1_x, 0, -100, 0, 4096));  // set to zero all motor
+      pwmController.setChannelOff(1);
+    }
+    else {
+      pwmController.setChannelOff(0);
+      pwmController.setChannelOff(1);
+    }
 
-    uint8_t joystick_1_y = map(RemoteXY.joystick_1_y,-100,100,128,255);
-    pwmController.setChannelPWM(1,  joystick_1_y << 4);
 
-    uint8_t joystick_2_x = map(RemoteXY.joystick_2_x,-100,100,128,255);
-    pwmController.setChannelPWM(2,  joystick_2_x << 4);
+    if(RemoteXY.joystick_1_y > 0) {
+      pwmController.setChannelPWM(3, map(RemoteXY.joystick_1_y, 0, 100, 0, 4096));  // set to zero all motor
+      pwmController.setChannelOff(2);
+    }
+    else if(RemoteXY.joystick_1_y < 0) {
+      pwmController.setChannelPWM(2, map(RemoteXY.joystick_1_y, 0, -100, 0, 4096));  // set to zero all motor
+      pwmController.setChannelOff(3);
+    }
+    else {
+      pwmController.setChannelOff(2);
+      pwmController.setChannelOff(3);
+    }
 
-    uint8_t joystick_2_y = map(RemoteXY.joystick_2_x,-100,100,128,255);
-    pwmController.setChannelPWM(3,  joystick_2_y << 4);
 
+    // manage joystick_2_x
+    if(RemoteXY.joystick_2_x > 0) {
+      pwmController.setChannelPWM(5, map(RemoteXY.joystick_2_x, 0, 100, 0, 4096));  // set to zero all motor
+      pwmController.setChannelOff(4);
+    }
+    else if(RemoteXY.joystick_2_x < 0) {
+      pwmController.setChannelPWM(4, map(RemoteXY.joystick_2_x, 0, -100, 0, 4096));  // set to zero all motor
+      pwmController.setChannelOff(5);
+    }
+    else {
+      pwmController.setChannelOff(4);
+      pwmController.setChannelOff(5);
+    }
+
+
+    // manage joystick_2_y
+    if(RemoteXY.joystick_2_y > 0) {
+      pwmController.setChannelPWM(7, map(RemoteXY.joystick_2_y, 0, 100, 0, 4096));  // set to zero all motor
+      pwmController.setChannelOff(6);
+    }
+    else if(RemoteXY.joystick_2_y < 0) {
+      pwmController.setChannelPWM(6, map(RemoteXY.joystick_2_y, 0, -100, 0, 4096));  // set to zero all motor
+      pwmController.setChannelOff(7);
+    }
+    else {
+      pwmController.setChannelOff(6);
+      pwmController.setChannelOff(7);
+    }
   }
 }
